@@ -51,7 +51,7 @@ class Converter{
 					
 					list($x, $y, $remainder) = $this->calcResolution($size);
 					
-					$x = 2; $y = 5;
+					$x = 5; $y = 2;
 					
 					print "size: $size    res: $x, $y, $remainder \n";
 					
@@ -63,10 +63,13 @@ class Converter{
 					fwrite($oh, $format->getInfoHeader());
 					
 					
-					for($n = 0; $n < $x * $y ; $n++){
-						fwrite($oh, chr(0).chr(0).chr(0xff) );
-					}
 					
+					fwrite($oh, chr(0).chr(0).chr(0xff) . chr(0).chr(0).chr(0) . chr(0).chr(0).chr(0) . chr(0).chr(0).chr(0) . chr(0xff).chr(0xff).chr(0) );
+					#fwrite($oh, chr(0).chr(0).chr(0) . chr(0).chr(0).chr(0) . chr(0).chr(0).chr(0) );
+					fwrite($oh, chr(0));
+					
+					fwrite($oh, chr(0).chr(0).chr(0xff) . chr(0).chr(0).chr(0) . chr(0).chr(0).chr(0) . chr(0).chr(0).chr(0) . chr(0xff).chr(0).chr(0) );
+					fwrite($oh, chr(0));
 					
 					
 					/*
