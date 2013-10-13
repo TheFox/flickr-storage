@@ -1,0 +1,26 @@
+{
+	"description": "Upload any file type to Flickr.",
+	"license": "GPLv3",
+	"authors": [
+		{
+			"name": "Christian Mayer",
+			"email": "thefox21at@gmail.com",
+			"homepage": "http://fox21.at"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0",
+		"rezzza/flickr": "dev-master",
+		"symfony/yaml": "2.3.4",
+		"guzzle/http": "3.7.3",
+		"lusitanian/oauth": "0.2.3",
+		"monolog/monolog": "1.6.*",
+		"ulrichsg/getopt-php": "1.1.*",
+		"zendframework/zend-math": "2.2.*"
+	},
+	"autoload": {
+		"psr-0": {
+			"TheFox": "src"
+		}
+	}
+}

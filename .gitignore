@@ -1,0 +1,5 @@
+*.lock
+*.log
+parameters.yml
+vendor
+test*.jpg
