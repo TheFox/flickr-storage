@@ -1,5 +1,5 @@
 # Flickr Storage
-Store any file on [Flickr](https://www.flickr.com/).
+Store any file at [Flickr](https://www.flickr.com/).
 
 ## Usage
 1. Get the access token:
