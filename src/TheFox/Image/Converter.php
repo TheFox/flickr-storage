@@ -51,7 +51,9 @@ class Converter{
 					
 					list($x, $y, $remainder) = $this->calcResolution($size);
 					
-					#print "size: $size    res: $x, $y, $remainder \n";
+					$x = 2; $y = 5;
+					
+					print "size: $size    res: $x, $y, $remainder \n";
 					
 					$format->setBiWidth($x);
 					$format->setBiHeight($y);
@@ -59,6 +61,15 @@ class Converter{
 					
 					fwrite($oh, $format->getFileHeader());
 					fwrite($oh, $format->getInfoHeader());
+					
+					
+					for($n = 0; $n < $x * $y ; $n++){
+						fwrite($oh, chr(0).chr(0).chr(0xff) );
+					}
+					
+					
+					
+					/*
 					
 					$readed = 0;
 					$t = time();
@@ -82,9 +93,11 @@ class Converter{
 						
 					}
 					
+					/*
 					for($n = 0; $n < $remainder; $n++){
 						fwrite($oh, chr(0));
 					}
+					*/
 					
 					fclose($ih);
 				}
@@ -119,59 +132,12 @@ class Converter{
 			$size = (int)($size / 3) + 1;
 		}
 		
-		#$size = 5;
-		
 		$sqrt = sqrt($size);
 		$sqrtMin = (int)$sqrt;
 		$sqrtMax = (int)$sqrt + 1;
 		
-		
 		print "size: $size\n";
 		print "sqrt: ".$sqrt." ".$sqrtMin."/".$sqrtMax." \n";
-		
-		
-		$diffs = array(
-			abs($size - $sqrtMin * $sqrtMax),
-			abs($size - $sqrtMax * $sqrtMax),
-			#abs($size - $sqrtMin * $sqrtMin),
-		);
-		
-		$max = 0;
-		foreach($diffs as $diff){
-			$max = max($max, $diff);
-		}
-		
-		$minIndex = 0;
-		$minVal = $max;
-		$n = 0;
-		foreach($diffs as $diff){
-			
-			#print "n = $diff \n";
-			if($diff < $minVal){
-				$minVal = $diff;
-				$minIndex = $n;
-			}
-			$n++;
-		}
-		
-		#print "min: $minIndex $minVal \n";
-		
-		/*
-		if($minIndex == 0){
-			print "min max = ".($sqrtMin * $sqrtMax)."\n";
-			$x = $sqrtMin;
-			$y = $sqrtMax;
-		}
-		elseif($minIndex == 1){
-			print "max = ".($sqrtMax * $sqrtMax)."\n";
-			$x = $y = $sqrtMax;
-		}
-		/*elseif($minIndex == 2){
-			print "min\n";
-			$x = $y = $sqrtMin;
-		}*/
-		
-		$remainder = $diffs[$minIndex];
 		
 		if($sqrtMin * $sqrtMin - $size >= 0){
 			print "min * min: ".($sqrtMin * $sqrtMin)." ".($sqrtMin * $sqrtMin - $size)."\n";
@@ -188,22 +154,6 @@ class Converter{
 			$x = $y = $sqrtMax;
 			$remainder = $sqrtMax * $sqrtMax - $size;
 		}
-		
-		#print "is size: ". (int) ($sqrtMin * $sqrtMin == $size)." \n";
-		
-		
-		
-		
-		/*
-		if($sqrtMin * $sqrtMin == $size){
-			$x = $y = $sqrtMin;
-		}
-		else{
-			
-			$x = $y = $sqrtMax;
-			$remainder = $sqrtMax * $sqrtMax - $size;
-		}
-		*/
 		
 		return array($x, $y, $remainder);
 	}
