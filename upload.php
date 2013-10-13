@@ -18,6 +18,7 @@ use Ulrichsg\Getopt;
 
 use TheFox\Image\Converter;
 
+die("nothing to see here\n");
 
 $logFormatter = new LineFormatter("[%datetime%] %level_name%: %message%\n"); # %context%
 $log = new Logger('upload');
@@ -463,6 +464,7 @@ for($n = 0; $n <= 31; $n++){
 
 print $bitstr."\n";
 */
+
 
 
 
