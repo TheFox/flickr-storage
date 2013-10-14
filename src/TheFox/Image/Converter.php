@@ -74,11 +74,8 @@ class Converter{
 						fwrite($oh, chr(0));
 					}
 					
-					
 					#fwrite($oh, chr(0xff).chr(0xff).chr(0xff).chr(0xff).chr(0xff).chr(0xff) .chr(0).chr(0) );
 					#fwrite($oh, chr(0).chr(0).chr(0).chr(0).chr(0).chr(0) .chr(0).chr(0) );
-					
-					
 					
 					fclose($ih);
 				}

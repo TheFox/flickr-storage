@@ -29,14 +29,14 @@ class Bmp{
 		$this->biSizeImage = $size;
 		
 		$this->bfSize = $this->getFileHeaderSize() + $this->getInfoHeaderSize() + $this->biSizeImage;
-		printf("bfSize = %d %02x\n", $this->bfSize, $this->bfSize);
-		printf("   getFileHeaderSize = %d %02x\n", $this->getFileHeaderSize(), $this->getFileHeaderSize());
-		printf("   getInfoHeaderSize = %d %02x\n", $this->getInfoHeaderSize(), $this->getInfoHeaderSize());
-		printf("   biSizeImage = %d %02x\n", $this->biSizeImage, $this->biSizeImage);
-		
 		if($this->bfSize > static::BF_SIZE_MAX){
 			$this->bfSize = static::BF_SIZE_MAX;
 		}
+		
+		#printf("bfSize = %d %02x\n", $this->bfSize, $this->bfSize);
+		#printf("   getFileHeaderSize = %d %02x\n", $this->getFileHeaderSize(), $this->getFileHeaderSize());
+		#printf("   getInfoHeaderSize = %d %02x\n", $this->getInfoHeaderSize(), $this->getInfoHeaderSize());
+		#printf("   biSizeImage = %d %02x\n", $this->biSizeImage, $this->biSizeImage);
 	}
 	
 	public function setBiWidth($w){
@@ -57,7 +57,7 @@ class Bmp{
 			.pack('V', $this->bfSize) // bfSize
 			.pack('xxxx') // bfReserved
 			.pack('V', $this->getFileHeaderSize() + $this->getInfoHeaderSize()) // bfOffBits
-			;
+		;
 	}
 	
 	public function getInfoHeaderSize(){
@@ -77,15 +77,13 @@ class Bmp{
 			.pack('V', 0) // biYPelsPerMeter
 			.pack('V', 0) // biClrUsed
 			.pack('V', 0) // biClrImportant
-			;
+		;
 	}
 	
 	public function calcSquareResolutionBySize($size){
 		$x = 0;
 		$y = 0;
 		$remainder = 0;
-		
-		#
 		
 		$pixel = 0;
 		if($size % 3 == 0){
@@ -99,12 +97,10 @@ class Bmp{
 		$sqrtMin = (int)$sqrt;
 		$sqrtMax = (int)$sqrt + 1;
 		
-		
-		print "sqrt: ".$sqrt." ".$sqrtMin."/".$sqrtMax." \n";
-		print "min * min: $sqrtMin * $sqrtMin = ".($sqrtMin * $sqrtMin)." ".($sqrtMin * $sqrtMin - $pixel)."\n";
-		print "min * max: $sqrtMin * $sqrtMax = ".($sqrtMin * $sqrtMax)." ".($sqrtMin * $sqrtMax - $pixel)."\n";
-		print "max * max: $sqrtMax * $sqrtMax = ".($sqrtMax * $sqrtMax)." ".($sqrtMax * $sqrtMax - $pixel)."\n";
-		
+		#print "sqrt: ".$sqrt." ".$sqrtMin."/".$sqrtMax." \n";
+		#print "min * min: $sqrtMin * $sqrtMin = ".($sqrtMin * $sqrtMin)." ".($sqrtMin * $sqrtMin - $pixel)."\n";
+		#print "min * max: $sqrtMin * $sqrtMax = ".($sqrtMin * $sqrtMax)." ".($sqrtMin * $sqrtMax - $pixel)."\n";
+		#print "max * max: $sqrtMax * $sqrtMax = ".($sqrtMax * $sqrtMax)." ".($sqrtMax * $sqrtMax - $pixel)."\n";
 		
 		if($sqrtMin * $sqrtMin - $pixel >= 0){
 			#print "min * min: $sqrtMin * $sqrtMin = ".($sqrtMin * $sqrtMin)." ".($sqrtMin * $sqrtMin - $pixel)."\n";
@@ -114,29 +110,25 @@ class Bmp{
 			#print "min * max: $sqrtMin * $sqrtMax = ".($sqrtMin * $sqrtMax)." ".($sqrtMin * $sqrtMax - $pixel)."\n";
 			$x = $sqrtMin;
 			$y = $sqrtMax;
-			#remainder = $x * $y * 3 - $size;
 		}
 		elseif($sqrtMax * $sqrtMax - $pixel >= 0){
 			#print "max * max: $sqrtMax * $sqrtMax = ".($sqrtMax * $sqrtMax)." ".($sqrtMax * $sqrtMax - $pixel)."\n";
 			$x = $y = $sqrtMax;
-			#$remainder = $x * $y * 3 - $size;
 		}
 		
 		$remainder = $x * $y * 3 - $size;
 		
 		$paddingPerLine = 4 - (($x * 3) % 4); // The size of each row is rounded up to a multiple of 4 bytes (a 32-bit DWORD) by padding.
 		$padding = $paddingPerLine * $y;
-		#$padding = ($x * 3) % 4;
 		
-		print "raw size: $size\n";
-		print "pixel: ".$pixel."\n";
-		print "data len: ".($x * $y * 3)."\n";
-		print "remainder: ".$remainder." (data len - raw size)\n";
-		print "byte    per line: ".($x * 3)."\n";
-		print "padding per line: ".$paddingPerLine."\n";
-		print "padding: ".$padding." ($x lines * padding per line)\n";
-		print "\n\n";
-		
+		#print "raw size: $size\n";
+		#print "pixel: ".$pixel."\n";
+		#print "data len: ".($x * $y * 3)."\n";
+		#print "remainder: ".$remainder." (data len - raw size)\n";
+		#print "byte    per line: ".($x * 3)."\n";
+		#print "padding per line: ".$paddingPerLine."\n";
+		#print "padding: ".$padding." ($x lines * padding per line)\n";
+		#print "\n\n";
 		
 		return array($x, $y, $remainder + $padding);
 	}
