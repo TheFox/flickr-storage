@@ -45,6 +45,7 @@ if(function_exists('pcntl_signal')){
 	pcntl_signal(SIGINT, 'signalHandler');
 }
 
+
 $getopt = new Getopt(array(
     array('d', 'description', Getopt::OPTIONAL_ARGUMENT, 'Description'),
     array('t', 'tags', Getopt::OPTIONAL_ARGUMENT, 'Comma separated tags.'),
@@ -53,11 +54,11 @@ $getopt = new Getopt(array(
 ));
 $getopt->parse();
 
-
-/*if( $getopt->getOption('help') || !count($getopt->getOptions()) || !$argDir ){
+/*
+if( $getopt->getOption('help') || !count($getopt->getOptions()) ){
 	$getopt->showHelp();
 	exit(3);
-}*/
+}
 
 $paramtersFilePath = __DIR__.'/parameters.yml';
 if(!file_exists($paramtersFilePath)){
@@ -77,10 +78,6 @@ if(
 	exit(1);
 }
 
-/*if(!file_exists($argDir)){
-	$log->critical('[main] dir not found: '.$argDir);
-	exit(1);
-}
 
 $photosetNames = array();
 $photosetNamesLower = array();
@@ -88,6 +85,9 @@ if($getopt->getOption('sets')){
 	$photosetNames = preg_split('/,/', $getopt->getOption('sets'));
 	$photosetNamesLower = preg_split('/,/', strtolower($getopt->getOption('sets')));
 }
+
+var_export($photosetNames);
+exit();
 
 $log->info('[main] description: '.($getopt->getOption('description') ? $getopt->getOption('description') : ''));
 $log->info('[main] tags: '.($getopt->getOption('tags') ? $getopt->getOption('tags') : ''));
@@ -390,20 +390,27 @@ $log->info('end');
 $logFilesSuccessful->info('end');
 */
 
+
 try{
 	$converter = new Converter();
 	$converter->registerExitVar($exit);
-	#$converter->convert('test1.txt', 'test1.bmp');
-	#$converter->convert('test2.mkv', 'test2.bmp');
-	#$converter->convert('test3.mov', 'test3.bmp');
-	#$converter->convert('test4.jpg', 'test4.bmp');
 	
-	foreach($getopt->getOperands() as $file){
-		$pathinfo = pathinfo($file);
-		$converter->convert($file, $pathinfo['dirname'].'/'.$pathinfo['basename'].'.bmp');
-	}
+	#$converter->cover('test2.mkv', 'test2.bmp');
+	#$converter->cover('test3.mov', 'test3.bmp');
+	#$converter->cover('test4.jpg', 'test4.bmp');
+	
+	#foreach($getopt->getOperands() as $file){
+	#	$pathinfo = pathinfo($file);
+	#	$converter->cover($file, $pathinfo['dirname'].'/'.$pathinfo['basename'].'.bmp');
+	#}
+	
+	#$converter->cover('test1.txt', 'test1.bmp');
+	#$converter->recover('test1.bmp', 'test1_2.txt');
+	
+	$converter->cover('test2.mkv', 'test2.bmp');
+	$converter->recover('test2.bmp', 'test2_2.mkv');
+	
 }
 catch(Exception $e){
 	print "ERROR: ".$e->getMessage()."\n";
 }
-

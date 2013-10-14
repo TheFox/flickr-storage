@@ -13,11 +13,13 @@ class Bmp{
 	
 	private $bfType = '';
 	private $bfSize = 0;
+	private $bfOffBits = 0;
+	private $biWidth = 0;
+	private $biHeight = 0;
 	private $biBitCount = 0;
 	private $biCompression = 0;
 	private $biSizeImage = 0;
-	private $biWidth = 0;
-	private $biHeight = 0;
+	
 	
 	public function __construct(){
 		$this->bfType = 'BM';
@@ -25,7 +27,12 @@ class Bmp{
 		$this->biCompression = static::BF_BI_RGB;
 	}
 	
+	public function getBfSize(){
+		return $this->bfSize;
+	}
+	
 	public function setContentSize($size){
+		print "content size: $size\n";
 		$this->biSizeImage = $size;
 		
 		$this->bfSize = $this->getFileHeaderSize() + $this->getInfoHeaderSize() + $this->biSizeImage;
@@ -60,6 +67,31 @@ class Bmp{
 		;
 	}
 	
+	public function readFileHeader($raw){
+		#var_export( $raw ); print "\n";
+		
+		if(strlen($raw) < $this->getFileHeaderSize()){
+			throw new \Exception("Raw data length is < ".$this->getFileHeaderSize()." byte.");
+		}
+		
+		$tmp = unpack('V', $raw[2].$raw[3].$raw[4].$raw[5]);
+		if(isset($tmp[1])){
+			$this->bfSize = $tmp[1];
+		}
+		
+		$tmp = unpack('V', $raw[10].$raw[11].$raw[12].$raw[13]);
+		if(isset($tmp[1])){
+			$this->bfOffBits = $tmp[1];
+		}
+		
+		#var_export( $tmp ); print "\n";
+		#var_export( unpack('V', $raw[5].$raw[4].$raw[3].$raw[2]) ); print "\n";
+		#var_export( unpack('v', $raw[0]) ); print "\n";
+		#var_export( unpack('CCCC', 'AB') ); print "\n";
+		
+		return $this->bfOffBits;
+	}
+	
 	public function getInfoHeaderSize(){
 		return static::BF_INFO_HEADER_SIZE;
 	}
@@ -78,6 +110,20 @@ class Bmp{
 			.pack('V', 0) // biClrUsed
 			.pack('V', 0) // biClrImportant
 		;
+	}
+	
+	public function readInfoHeader($raw){
+		if(strlen($raw) < $this->getInfoHeaderSize()){
+			throw new \Exception("Raw data length is < ".$this->getInfoHeaderSize()." byte.");
+		}
+		
+		$tmp = unpack('V', $raw[20].$raw[21].$raw[22].$raw[23]);
+		if(isset($tmp[1])){
+			$this->biSizeImage = $tmp[1];
+			#var_export( $tmp[1] ); print "\n";
+		}
+		
+		return $this->biSizeImage;
 	}
 	
 	public function calcSquareResolutionBySize($size){
