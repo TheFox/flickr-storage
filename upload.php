@@ -53,11 +53,6 @@ $getopt = new Getopt(array(
 ));
 $getopt->parse();
 
-$argDirs = $getopt->getOperands();
-$argDir = '';
-if(count($argDirs)){
-	$argDir = array_shift($argDirs);
-}
 
 /*if( $getopt->getOption('help') || !count($getopt->getOptions()) || !$argDir ){
 	$getopt->showHelp();
@@ -395,81 +390,18 @@ $log->info('end');
 $logFilesSuccessful->info('end');
 */
 
-
-
-/*
-$c = unpack('c*', 439041101);
-$c = unpack('L', 65 << 24);
-#$c = unpack('L', 'ABCD');
-$c = pack('CCCC', 65, 66, 67, 68 );
-$c = pack('xxxx');
-
-$c = pack('V', 0x424D);
-#$c = pack('V@', 0x4142);
-#$c = pack('@V', 0x4142);
-
-$c = pack('v', 0x4142);
-$c = pack('v@', 0x4142);
-$c = pack('v', 0xaabbcc);
-$c = pack('V', 0xff << 31);
-$c = pack('V', 1);
-$c = pack('v', 65);
-
-
-
-#var_export($c);
-var_dump($c); print "\n\n\n";
-#$c = $c[1];
-
-for($p = 0; $p < strlen($c) - 1; $p++){
-	if(isset($c[$p])){
-		$cc = ord($c[$p]);
-		
-		printf("%02x %02x %02x %02x  %02x %02x %02x %02x \n",
-			($cc >> 56 & 0xff),
-			($cc >> 48 & 0xff),
-			($cc >> 40 & 0xff),
-			($cc >> 32 & 0xff),
-			
-			($cc >> 24 & 0xff),
-			($cc >> 16 & 0xff),
-			($cc >> 8 & 0xff),
-			($cc & 0xff)
-		);
-	}
-	else break;
-}
-
-printf("%02x %02x %02x %02x  %02x %02x %02x %02x \n",
-	($c >> 56 & 0xff),
-	($c >> 48 & 0xff),
-	($c >> 40 & 0xff),
-	($c >> 32 & 0xff),
-	
-	($c >> 24 & 0xff),
-	($c >> 16 & 0xff),
-	($c >> 8 & 0xff),
-	($c & 0xff)
-);
-
-
-print "\n\n\n";
-
-$bitstr = '';
-for($n = 0; $n <= 31; $n++){
-	#print( $n." = ".(int)(   )."\n" );
-	$bitstr = (($c & 1 << $n) > 0 ? '1' : '0'). ($n % 8 == 0 ? ' ' : ''). $bitstr;
-}
-
-print $bitstr."\n";
-*/
-
-
 try{
 	$converter = new Converter();
 	$converter->registerExitVar($exit);
-	$converter->convert('test1.txt', 'test1.bmp');
+	#$converter->convert('test1.txt', 'test1.bmp');
 	#$converter->convert('test2.mkv', 'test2.bmp');
+	#$converter->convert('test3.mov', 'test3.bmp');
+	#$converter->convert('test4.jpg', 'test4.bmp');
+	
+	foreach($getopt->getOperands() as $file){
+		$pathinfo = pathinfo($file);
+		$converter->convert($file, $pathinfo['dirname'].'/'.$pathinfo['basename'].'.bmp');
+	}
 }
 catch(Exception $e){
 	print "ERROR: ".$e->getMessage()."\n";
