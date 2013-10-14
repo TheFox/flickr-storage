@@ -170,15 +170,15 @@ class Converter{
 					
 					$bfOffBits = $format->readFileHeader(fread($ih, $format->getFileHeaderSize()));
 					$biSizeImage = $format->readInfoHeader(fread($ih, $format->getInfoHeaderSize()));
-					print "biSizeImage: ".$biSizeImage."\n";
+					#print "biSizeImage: ".$biSizeImage."\n";
 					#print "bfSize: ".$format->getBfSize()."\n";
 					if($bfOffBits != ftell($ih)){
 						throw new \Exception("Wrong posistion: bfOffBits=$bfOffBits, ftell=".ftell($ih)."");
 					}
 					
 					$this->readHeader(fread($ih, $this->getHeaderSize()));
-					print "remainder: ".$this->remainder."\n";
-					print "tell: ".ftell($ih)."\n";
+					#print "remainder: ".$this->remainder."\n";
+					#print "tell: ".ftell($ih)."\n";
 					
 					
 					$readed = 0;
@@ -214,12 +214,12 @@ class Converter{
 						#sleep(1);
 					}
 					
-					print "tell: ".ftell($ih)."\n";
+					#print "tell: ".ftell($ih)."\n";
 					fread($ih, $this->remainder);
-					print "tell: ".ftell($ih)."\n";
+					#print "tell: ".ftell($ih)."\n";
 					
 					fread($ih, 1);
-					print "tell: ".ftell($ih)."\n";
+					#print "tell: ".ftell($ih)."\n";
 					
 					if(!feof($ih)){
 						throw new \Exception("Input handler is not at the end of the file.");

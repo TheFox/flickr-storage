@@ -32,7 +32,7 @@ class Bmp{
 	}
 	
 	public function setContentSize($size){
-		print "content size: $size\n";
+		#print "content size: $size\n";
 		$this->biSizeImage = $size;
 		
 		$this->bfSize = $this->getFileHeaderSize() + $this->getInfoHeaderSize() + $this->biSizeImage;
