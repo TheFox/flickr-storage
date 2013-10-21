@@ -140,7 +140,7 @@ class Bmp{
 		}
 		
 		$sqrt = sqrt($pixel);
-		$sqrtMin = (int)$sqrt;
+		$sqrtMin = (int)floor($sqrt);
 		$sqrtMax = (int)$sqrt + 1;
 		
 		#print "sqrt: ".$sqrt." ".$sqrtMin."/".$sqrtMax." \n";
