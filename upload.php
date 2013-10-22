@@ -64,19 +64,19 @@ if( $getopt->getOption('help') || !count($getopt->getOptions()) ){
 	exit(3);
 }
 
-$paramtersFilePath = __DIR__.'/parameters.yml';
-if(!file_exists($paramtersFilePath)){
+$parametersFilePath = __DIR__.'/parameters.yml';
+if(!file_exists($parametersFilePath)){
 	$log->critical('[main] first run accesstoken.php');
 	exit(1);
 }
 
-$paramters = Yaml::parse($paramtersFilePath);
+$parameters = Yaml::parse($parametersFilePath);
 
 if(
-	!isset($paramters)
-	|| !isset($paramters['flickr'])
-	|| !isset($paramters['flickr']['consumer_key'])
-	|| !isset($paramters['flickr']['consumer_secret'])
+	!isset($parameters)
+	|| !isset($parameters['flickr'])
+	|| !isset($parameters['flickr']['consumer_key'])
+	|| !isset($parameters['flickr']['consumer_secret'])
 ){
 	$log->critical('[main] parameters invalid');
 	exit(1);
@@ -100,8 +100,8 @@ $fileErrors = 0;
 $filesFailed = array();
 
 
-$metadata = new Metadata($paramters['flickr']['consumer_key'], $paramters['flickr']['consumer_secret']);
-$metadata->setOauthAccess($paramters['flickr']['token'], $paramters['flickr']['token_secret']);
+$metadata = new Metadata($parameters['flickr']['consumer_key'], $parameters['flickr']['consumer_secret']);
+$metadata->setOauthAccess($parameters['flickr']['token'], $parameters['flickr']['token_secret']);
 
 $guzzleAdapter = new GuzzleAdapter();
 $guzzleAdapterVerbose = new GuzzleAdapter();

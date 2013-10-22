@@ -25,8 +25,8 @@ if(function_exists('pcntl_signal')){
 	pcntl_signal(SIGINT, 'signalHandler');
 }
 
-$paramtersFilePath = __DIR__.'/parameters.yml';
-if(!file_exists($paramtersFilePath)){
+$parametersFilePath = __DIR__.'/parameters.yml';
+if(!file_exists($parametersFilePath)){
 	
 	print "Consumer key: ";
 	$consumerKey = trim(fgets(STDIN));
@@ -34,17 +34,17 @@ if(!file_exists($paramtersFilePath)){
 	print "Consumer secret: ";
 	$consumerSecret = trim(fgets(STDIN));
 	
-	$paramters = array(
+	$parameters = array(
 		'flickr' => array(
 			'consumer_key' => $consumerKey,
 			'consumer_secret' => $consumerSecret,
 		),
 	);
-	file_put_contents($paramtersFilePath, Yaml::dump($paramters));
+	file_put_contents($parametersFilePath, Yaml::dump($parameters));
 }
 
-$paramters = Yaml::parse($paramtersFilePath);
-if(!isset($paramters['flickr']['token']) && !isset($paramters['flickr']['token_secret'])){
+$parameters = Yaml::parse($parametersFilePath);
+if(!isset($parameters['flickr']['token']) && !isset($parameters['flickr']['token_secret'])){
 	$uriFactory = new UriFactory();
 	$currentUri = $uriFactory->createFromSuperGlobalArray(array(
 		'HTTP_HOST' => 'fox21.at',
@@ -55,7 +55,7 @@ if(!isset($paramters['flickr']['token']) && !isset($paramters['flickr']['token_s
 	$currentUri->setQuery('');
 	
 	$storage = new Session(false);
-	$credentials = new Credentials($paramters['flickr']['consumer_key'], $paramters['flickr']['consumer_secret'], $currentUri->getAbsoluteUri());
+	$credentials = new Credentials($parameters['flickr']['consumer_key'], $parameters['flickr']['consumer_secret'], $currentUri->getAbsoluteUri());
 	
 	$flickrService = new Flickr($credentials, new GuzzleStreamClient(), $storage, new Signature($credentials));
 	
@@ -87,9 +87,9 @@ if(!isset($paramters['flickr']['token']) && !isset($paramters['flickr']['token_s
 					$accessTokenSecret = $token->getAccessTokenSecret();
 					
 					print "save accessToken and accessTokenSecret\n";
-					$paramters['flickr']['token'] = $accessToken;
-					$paramters['flickr']['token_secret'] = $accessTokenSecret;
-					file_put_contents($paramtersFilePath, Yaml::dump($paramters));
+					$parameters['flickr']['token'] = $accessToken;
+					$parameters['flickr']['token_secret'] = $accessTokenSecret;
+					file_put_contents($parametersFilePath, Yaml::dump($parameters));
 					
 					#print "run this script again\n";exit();
 				}
@@ -106,8 +106,8 @@ if(!isset($paramters['flickr']['token']) && !isset($paramters['flickr']['token_s
 }
 
 try{
-	$metadata = new Rezzza\Flickr\Metadata($paramters['flickr']['consumer_key'], $paramters['flickr']['consumer_secret']);
-	$metadata->setOauthAccess($paramters['flickr']['token'], $paramters['flickr']['token_secret']);
+	$metadata = new Rezzza\Flickr\Metadata($parameters['flickr']['consumer_key'], $parameters['flickr']['consumer_secret']);
+	$metadata->setOauthAccess($parameters['flickr']['token'], $parameters['flickr']['token_secret']);
 	
 	$factory = new Rezzza\Flickr\ApiFactory($metadata, new Rezzza\Flickr\Http\GuzzleAdapter());
 	
