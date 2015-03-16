@@ -1,7 +1,7 @@
 {
 	"name": "thefox/flickr-storage",
 	"description": "Store any file at Flickr.",
-	"license": "GPLv3",
+	"license": "GPL-3.0",
 	"authors": [
 		{
 			"name": "Christian Mayer",
