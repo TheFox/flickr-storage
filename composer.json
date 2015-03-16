@@ -1,4 +1,5 @@
 {
+	"name": "thefox/flickr-storage",
 	"description": "Store any file at Flickr.",
 	"license": "GPLv3",
 	"authors": [
