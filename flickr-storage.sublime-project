@@ -2,11 +2,9 @@
 	"folders":[
 		{
 			"path": ".",
-			"name": "Flickr Uploader",
-			"folder_exclude_patterns": [],
-			"file_exclude_patterns": [
-				"*.swp", "*.sublime-workspace", "composer.lock"
-			]
+			"name": "Flickr Storage",
+			"folder_exclude_patterns": [ ],
+			"file_exclude_patterns": [ ]
 		}
 	]
 }
